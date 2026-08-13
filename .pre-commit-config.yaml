@@ -1,0 +1,69 @@
+# See https://pre-commit.com for more information
+repos:
+#  - repo: local
+#    hooks:
+#      - id: helm-render-charts
+#        name: Render Helm charts
+#        entry: scripts/helm-dry-run.sh
+#        language: script
+#        pass_filenames: true
+#        always_run: false
+
+  # General file formatting and checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Basic file checks
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+      # JSON and YAML formatting
+      - id: check-json
+      - id: pretty-format-json
+        args: ['--autofix', '--indent=2']
+
+      # Security checks
+      - id: detect-private-key
+      # - id: detect-aws-credentials  # Disabled due to configuration issues
+
+      # Git checks
+      - id: forbid-new-submodules
+      # - id: no-commit-to-branch
+      #   args: ['--branch', 'main', '--branch', 'master']
+
+
+  # YAML linting and formatting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [
+          '--config-file', '.config/.yamllint'
+        ]
+
+  # Markdown linting - relaxed rules
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.41.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix', '--disable', 'MD013', 'MD033', 'MD036', 'MD040']
+
+# Configuration for specific tools
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: [trivy-fs, trivy-config]  # Skip heavy security scans on CI - run locally instead
+  submodules: false

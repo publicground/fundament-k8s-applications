@@ -1,0 +1,11 @@
+# ShellCheck configuration file
+# See: https://github.com/koalaman/shellcheck/blob/master/shellcheck.1.md
+
+# Set shell dialect
+shell=bash
+
+# Exclude external sources (like library includes)
+exclude-dir=.git
+
+# Source-path for finding sourced files
+source-path=SCRIPTDIR
