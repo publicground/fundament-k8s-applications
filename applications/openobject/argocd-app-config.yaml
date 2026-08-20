@@ -1,0 +1,4 @@
+application: openobject
+syncWave: "1"
+clusterName: fundament-npr
+namespace: publicground
