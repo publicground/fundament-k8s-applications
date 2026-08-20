@@ -12,7 +12,7 @@ spec:
       name: gateway-options
   listeners:
     - name: https
-      hostname: "*.fundament.publicground.nl"
+      hostname: "argocd.fundament.publicground.nl"
       port: 443
       protocol: HTTPS
       tls:
@@ -20,7 +20,7 @@ spec:
         certificateRefs:
           - group: ""
             kind: Secret
-            name: wildcard-tls
+            name: argocd-tls
       allowedRoutes:
         namespaces:
           from: All
