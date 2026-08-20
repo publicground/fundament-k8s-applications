@@ -34,4 +34,5 @@ spec:
 
   storage:
     size: 1Gi
+    #storageClass: csi-lvm
     storageClass: local-hostpath

@@ -6,7 +6,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Delete
+# NOTE: "Delete" reclaim policy only works for volumes created by a real dynamic
+# provisioner. These PVs are statically created (provisioner: no-provisioner), so
+# "Delete" would silently do nothing - once a PVC is removed the PV gets stuck in
+# "Released" (not "Available"), and no new PVC can ever bind to it again. Use
+# "Retain" and manually delete+recreate the PV object when you need to reuse it.
+reclaimPolicy: Retain
 ---
 # One PersistentVolume per Cluster instance (spec.instances: 2 in testcluster.yaml).
 # Each PV uses a hostPath on the node it is scheduled to. nodeAffinity pins each PV to
@@ -23,7 +28,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: local-hostpath
   hostPath:
     path: /mnt/data/pg-test-cluster/instance-0
@@ -48,7 +53,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: local-hostpath
   hostPath:
     path: /mnt/data/pg-test-cluster/instance-1
