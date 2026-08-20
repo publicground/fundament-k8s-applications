@@ -11,3 +11,45 @@ spec:
     group: cert-manager.io
   dnsNames:
     - "argocd.fundament.publicground.nl"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: objecttypen-tls
+  namespace: istio-system
+spec:
+  secretName: objecttypen-tls
+  issuerRef:
+    name: letsencrypt-http01
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - "objecttypen.fundament.publicground.nl"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openobjecten-tls
+  namespace: istio-system
+spec:
+  secretName: openobjecten-tls
+  issuerRef:
+    name: letsencrypt-http01
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - "openobjecten.fundament.publicground.nl"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openobject-tls
+  namespace: istio-system
+spec:
+  secretName: openobject-tls
+  issuerRef:
+    name: letsencrypt-http01
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - "openobject.fundament.publicground.nl"

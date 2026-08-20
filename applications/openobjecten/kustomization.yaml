@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: objecten
+    repo: https://raw.githubusercontent.com/maykinmedia/charts/gh-pages/
+    version: "2.12.0"
+    releaseName: openobjecten
+    namespace: publicground
+    valuesFile: helm-values/openobjecten.yaml
+
+resources:
+  - manifests

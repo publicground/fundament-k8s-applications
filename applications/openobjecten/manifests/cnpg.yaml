@@ -1,0 +1,19 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: openobjecten-pg-cluster
+  namespace: publicground
+  annotations:
+    # Delay until the cloudnative-pg operator's webhook has ready endpoints (same
+    # reasoning as applications/cloudnative-pg/manifests/testcluster.yaml).
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  instances: 1
+  storage:
+    size: "1Gi"
+    # Cluster default StorageClass (metal-stack.io/csi-lvm) — see note in
+    # applications/objecttypen/manifests/cnpg.yaml about the open provisioning issue.
+  bootstrap:
+    initdb:
+      database: "openobjecten"
+      owner: "openobjecten"

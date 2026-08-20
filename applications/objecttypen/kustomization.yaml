@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: objecttypen
+    repo: https://raw.githubusercontent.com/maykinmedia/charts/gh-pages/
+    version: "1.6.1"
+    releaseName: objecttypen
+    namespace: publicground
+    valuesFile: helm-values/objecttypen.yaml
+
+resources:
+  - manifests

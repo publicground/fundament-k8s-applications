@@ -31,6 +31,45 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-objecttypen
+      hostname: "objecttypen.fundament.publicground.nl"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: objecttypen-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-openobjecten
+      hostname: "openobjecten.fundament.publicground.nl"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: openobjecten-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-openobject
+      hostname: "openobject.fundament.publicground.nl"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: openobject-tls
+      allowedRoutes:
+        namespaces:
+          from: All
 ---
 # Cluster-wide HTTP → HTTPS redirect
 # Individual app HTTPRoutes only need to attach to the `https` listener.
