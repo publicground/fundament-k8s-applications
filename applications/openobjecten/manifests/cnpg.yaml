@@ -9,6 +9,9 @@ metadata:
     argocd.argoproj.io/sync-wave: "5"
 spec:
   instances: 1
+  # openobjecten uses GeoDjango (django.contrib.gis), which requires the postgis
+  # extension — the plain cloudnative-pg/postgresql image doesn't include it.
+  imageName: ghcr.io/cloudnative-pg/postgis:16.15-3.6.4-system-trixie
   storage:
     size: "1Gi"
     # Cluster default StorageClass (metal-stack.io/csi-lvm) — see note in
