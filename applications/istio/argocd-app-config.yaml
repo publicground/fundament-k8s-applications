@@ -1,0 +1,4 @@
+application: istio
+syncWave: "-3"
+clusterName: fundament-npr
+namespace: istio-system

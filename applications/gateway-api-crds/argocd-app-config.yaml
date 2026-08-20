@@ -1,0 +1,4 @@
+application: gateway-api-crds
+syncWave: "-2"
+clusterName: fundament-npr
+namespace: gateway-api-crds
