@@ -1,0 +1,4 @@
+application: cert-manager-webhook-transip
+syncWave: "0"
+clusterName: fundament-npr
+namespace: cert-manager

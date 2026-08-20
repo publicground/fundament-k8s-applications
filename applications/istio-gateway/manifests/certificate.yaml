@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: wildcard-tls
   issuerRef:
-    name: ca-issuer
+    name: letsencrypt-transip
     kind: ClusterIssuer
     group: cert-manager.io
   dnsNames:

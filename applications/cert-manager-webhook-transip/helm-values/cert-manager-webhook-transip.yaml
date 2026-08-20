@@ -1,0 +1,7 @@
+groupName: acme.transip.nl
+
+certManager:
+  namespace: cert-manager
+
+secretName:
+  - transip-secret
