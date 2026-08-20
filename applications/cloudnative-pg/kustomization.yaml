@@ -7,6 +7,7 @@ helmCharts:
     version: "0.29.0"
     releaseName: cloudnative-pg
     namespace: cloudnative-pg
+    includeCRDs: true
     valuesFile: helm-values/cloudnative-pg.yaml
 
 resources:
@@ -17,3 +18,19 @@ labels:
   - pairs:
       app.kubernetes.io/part-of: cloudnative-pg
     includeSelectors: false
+
+patches:
+  # CloudNativePG's CRDs are very large and exceed the 262144-byte limit for the
+  # kubectl.kubernetes.io/last-applied-configuration annotation used by client-side
+  # apply. Without Replace=true, ArgoCD's normal apply silently fails/skips updating
+  # these CRDs, which can leave the postgresql.cnpg.io/v1 "Cluster" kind missing or
+  # stale (manifesting as "no matches for kind Cluster in version postgresql.cnpg.io/v1"
+  # in the operator logs). Replace=true also lets ArgoCD take ownership without
+  # field-manager conflicts from the initial Helm install.
+  - target:
+      kind: CustomResourceDefinition
+    patch: |-
+      - op: add
+        path: /metadata/annotations/argocd.argoproj.io~1sync-options
+        value: Replace=true
+
