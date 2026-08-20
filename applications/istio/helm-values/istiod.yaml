@@ -12,7 +12,3 @@ pilot:
   #   PILOT_ENABLE_ALPHA_GATEWAY_API: true
 seccompProfile:
   type: RuntimeDefault
-
-# --- Route images through ACR cache (added) ---
-global:
-  hub: acrcoreinfra720prd.azurecr.io/docker.io/istio
