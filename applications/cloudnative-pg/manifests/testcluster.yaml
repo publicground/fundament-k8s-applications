@@ -13,6 +13,11 @@ metadata:
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+
+  affinity:
+    nodeSelector:
+      kubernetes.io/hostname: shoot--wigo4ib985--wigo4itfe39-funoe584-5885f-zrkcf
+
   bootstrap:
     initdb:
       database: pgtestdb
@@ -29,3 +34,4 @@ spec:
 
   storage:
     size: 1Gi
+    storageClass: local-hostpath

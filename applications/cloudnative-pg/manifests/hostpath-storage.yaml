@@ -1,0 +1,64 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-hostpath
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+---
+# One PersistentVolume per Cluster instance (spec.instances: 2 in testcluster.yaml).
+# Each PV uses a hostPath on the node it is scheduled to. nodeAffinity pins each PV to
+# the same node the Cluster's pods are scheduled on (see spec.affinity.nodeSelector in
+# testcluster.yaml), so the PVC always binds to a PV whose data actually lives there.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pg-test-cluster-hostpath-0
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-hostpath
+  hostPath:
+    path: /mnt/data/pg-test-cluster/instance-0
+    type: DirectoryOrCreate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - shoot--wigo4ib985--wigo4itfe39-funoe584-5885f-zrkcf
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pg-test-cluster-hostpath-1
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-hostpath
+  hostPath:
+    path: /mnt/data/pg-test-cluster/instance-1
+    type: DirectoryOrCreate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - shoot--wigo4ib985--wigo4itfe39-funoe584-5885f-zrkcf
+
