@@ -3,6 +3,13 @@ kind: Cluster
 metadata:
   name: pg-test-cluster
   namespace: cloudnative-pg
+  annotations:
+    # Delay applying this Cluster CR until after the operator's Deployment (wave 0,
+    # default) is healthy. Without this, ArgoCD applies the Cluster CR in the same
+    # wave as the operator Deployment/webhook Service, and the mutating webhook
+    # ("mcluster.cnpg.io") has no ready endpoints yet, causing:
+    # "no endpoints available for service cnpg-webhook-service".
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4
