@@ -1,0 +1,12 @@
+profile: ambient
+cni:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
+
+# --- Route images through ACR cache (added) ---
+global:
+  hub: acrcoreinfra720prd.azurecr.io/docker.io/istio
