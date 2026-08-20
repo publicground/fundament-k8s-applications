@@ -1,4 +1,0 @@
-application: testapp
-syncWave: "2"
-clusterName: fundament-npr
-namespace: fundament
