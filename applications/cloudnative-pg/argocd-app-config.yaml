@@ -1,0 +1,4 @@
+application: cloudnative-pg
+syncWave: "0"
+clusterName: fundament-npr
+namespace: cloudnative-pg

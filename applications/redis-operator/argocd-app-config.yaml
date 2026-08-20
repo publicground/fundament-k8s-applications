@@ -1,0 +1,4 @@
+application: redis-operator
+syncWave: "0"
+clusterName: fundament-npr
+namespace: redis-operator
