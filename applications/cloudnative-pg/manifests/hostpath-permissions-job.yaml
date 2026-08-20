@@ -1,0 +1,58 @@
+# DirectoryOrCreate hostPath volumes are created by kubelet as root:root (mode 0755).
+# The CNPG Postgres container runs as the non-root "postgres" user (uid/gid 26 by
+# default) and cannot create/write into that directory, causing:
+#   initdb: error: could not create directory ".../pgdata": Permission denied
+#
+# PostgreSQL's initdb refuses to run as root, so running the Cluster as uid 0 is not
+# a valid workaround. Instead, this one-off Job runs as root on the same pinned node
+# (before the Cluster, via sync-wave ordering) and chowns/chmods the hostPath
+# directories so the postgres user (26:26) can use them.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pg-test-cluster-hostpath-permissions
+  namespace: cloudnative-pg
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: shoot--wigo4ib985--wigo4itfe39-funoe584-5885f-zrkcf
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: fix-permissions
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              for d in /data/instance-0 /data/instance-1; do
+                mkdir -p "$d"
+                chown -R 26:26 "$d"
+                chmod -R 0700 "$d"
+                echo "fixed $d:"; ls -ld "$d"
+              done
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: instance-0
+              mountPath: /data/instance-0
+            - name: instance-1
+              mountPath: /data/instance-1
+      volumes:
+        - name: instance-0
+          hostPath:
+            path: /mnt/data/pg-test-cluster/instance-0
+            type: DirectoryOrCreate
+        - name: instance-1
+          hostPath:
+            path: /mnt/data/pg-test-cluster/instance-1
+            type: DirectoryOrCreate
+
