@@ -1,0 +1,4 @@
+application: cert-manager
+syncWave: "-1"
+clusterName: fundament-npr
+namespace: cert-manager

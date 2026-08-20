@@ -6,22 +6,13 @@ metadata:
 spec:
   gatewayClassName: istio
   infrastructure:
-    annotations:
-      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-      service.beta.kubernetes.io/port_443_health-probe_protocol: "HTTP"
-      service.beta.kubernetes.io/port_443_health-probe_port: "15021"
-      service.beta.kubernetes.io/port_443_health-probe_request-path: "/healthz/ready"
-      service.beta.kubernetes.io/port_80_health-probe_protocol: "HTTP"
-      service.beta.kubernetes.io/port_80_health-probe_port: "15021"
-      service.beta.kubernetes.io/port_80_health-probe_request-path: "/healthz/ready"
-      external-dns.alpha.kubernetes.io/hostname: "*.fundament-npr.intern.publicground.nl"
     parametersRef:
       group: ""
       kind: ConfigMap
       name: gateway-options
   listeners:
     - name: https
-      hostname: "*.fundament-npr.intern.publicground.nl"
+      hostname: "*.fundament.publicground.nl"
       port: 443
       protocol: HTTPS
       tls:
@@ -34,7 +25,7 @@ spec:
         namespaces:
           from: All
     - name: http
-      hostname: "*.fundament-npr.intern.publicground.nl"
+      hostname: "*.fundament.publicground.nl"
       port: 80
       protocol: HTTP
       allowedRoutes:

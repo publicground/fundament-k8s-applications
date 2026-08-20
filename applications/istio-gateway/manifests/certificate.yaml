@@ -6,8 +6,8 @@ metadata:
 spec:
   secretName: wildcard-tls
   issuerRef:
-    name: letsencrypt-prod
+    name: ca-issuer
     kind: ClusterIssuer
     group: cert-manager.io
   dnsNames:
-    - "*.fundament-npr.intern.publicground.nl"
+    - "*.fundament.publicground.nl"
